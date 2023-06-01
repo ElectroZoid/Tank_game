@@ -2,6 +2,7 @@ import pygame
 import math
 import random
 
+
 WIDTH,HEIGHT=1000,800
 WIN=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('Tanks')
@@ -16,14 +17,15 @@ BLACK=(0,0,0)
 
 #dimensions
 TANK_WIDTH,TANK_HEIGHT=100,100
-TANK_CANNON_WIDTH,TANK_CANNON_HEIGHT=100,10
+TANK_CANNON_WIDTH,TANK_CANNON_HEIGHT=100,50
+TANK_NUKE_WIDTH,TANK_NUKE_HEIGHT=30,20
 
 #images
 #1)Tank
 TANK_BODY=pygame.transform.scale(pygame.image.load('tank_body.png'),(TANK_WIDTH,TANK_HEIGHT)).convert_alpha()
 TANK_CANNON=pygame.transform.scale(pygame.image.load('tank_cannon.png'),(TANK_CANNON_WIDTH,TANK_CANNON_HEIGHT)).convert_alpha()
 TANK_NUKE=pygame.transform.scale(pygame.image.load('tank_nuke.png'),(TANK_CANNON_WIDTH,TANK_CANNON_HEIGHT)).convert_alpha()
-
+BACKGROUND=pygame.transform.scale(pygame.image.load(('background.png')),(WIDTH,HEIGHT)).convert_alpha()
 #2)Assets
 
 #velocity
@@ -52,14 +54,15 @@ r=None
 
 class Projectile():
 
-    def __init__(self,x,y,height,angle,img,c):
+    def __init__(self,x,y,width,height,angle,img,c):
         self.count=0
+        self.width=width
         self.height=height
         self.angle=angle
         self.c=c
         self.x=x
         self.y=y
-        self.img=pygame.transform.scale(img,(30,2*self.height))
+        self.img=pygame.transform.scale(img,(self.width,self.height))
         self.rect=pygame.Rect(self.x,self.y,1,1)                 #reference rectangle for bullet
         self.mask=None
 
@@ -129,7 +132,7 @@ class Enemy():
         
         self.angle=angle
 
-        self.bullet=Projectile(self.x,self.y,TANK_CANNON_HEIGHT,self.angle,TANK_NUKE,True)
+        self.bullet=Projectile(self.x,self.y,TANK_NUKE_WIDTH,TANK_NUKE_HEIGHT,self.angle,TANK_NUKE,True)
 
     def draw(self):
         
@@ -159,7 +162,7 @@ class Enemy():
 
 
 
-def draw(player,m_x,m_y,projectile,enemy):
+def draw(player,m_x,m_y,projectile,enemy,background):
     global ANGLE
     global ANGLE2
     global HEALTH
@@ -168,7 +171,7 @@ def draw(player,m_x,m_y,projectile,enemy):
     global TANK_BODY_MASK
 
 
-    WIN.fill(GREEN)
+    WIN.blit(background,(0,0))
     
     projectile.draw()
     
@@ -260,7 +263,7 @@ def movement(keys,player,projectile,enemy):
 def main():
 
     #projectile and enemy objects
-    projectile=Projectile(0,0,TANK_CANNON_HEIGHT,ANGLE2,TANK_NUKE,False)  #projectile object
+    projectile=Projectile(0,0,TANK_NUKE_WIDTH,TANK_NUKE_HEIGHT,ANGLE2,TANK_NUKE,False)  #projectile object
     enemy=set()                                                            #enemy object list
 
 
@@ -275,6 +278,7 @@ def main():
 
             enemy1=Enemy(TANK_BODY,TANK_CANNON,random.randint(100,WIDTH-100),random.randint(100,HEIGHT-100),player)
             enemy.add(enemy1)
+        
 
 
 
@@ -313,7 +317,7 @@ def main():
 
 
 
-        draw(player,m_x,m_y,projectile,enemy)
+        draw(player,m_x,m_y,projectile,enemy,BACKGROUND)
         movement(keys,player,projectile,enemy)
 
     
