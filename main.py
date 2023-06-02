@@ -17,7 +17,7 @@ BLUE=(0,0,128)
 
 #dimensions
 TANK_WIDTH,TANK_HEIGHT=100,100
-TANK_CANNON_WIDTH,TANK_CANNON_HEIGHT=100,50
+TANK_CANNON_WIDTH,TANK_CANNON_HEIGHT=140,40
 TANK_NUKE_WIDTH,TANK_NUKE_HEIGHT=30,20
 
 #images
@@ -233,7 +233,7 @@ def draw(player,m_x,m_y,projectile,enemy,background):
         WIN.blit(TANK_CANNON_IMAGE,(player.x-(((TANK_CANNON_WIDTH//2)*math.cos(math.radians(ANGLE2)))-((TANK_CANNON_HEIGHT//2)*math.sin(math.radians(ANGLE2)))),player.y-((TANK_CANNON_HEIGHT//2)*math.cos(math.radians(ANGLE2)))+((TANK_CANNON_WIDTH//2)*math.sin(math.radians(ANGLE2)))))
 
     #player health
-    pygame.draw.rect(WIN,(255,0,0),(player.x-50,player.y-100,HEALTH/10,10)) #health bar
+    pygame.draw.rect(WIN,(255,0,0),(player.x-50,player.y-100,HEALTH/5,10)) #health bar
 
     #score
     font=pygame.font.Font('freesansbold.ttf',19) #font style and font size
