@@ -3,7 +3,7 @@ import math
 import random
 
 
-WIDTH,HEIGHT=1000,800
+WIDTH,HEIGHT=1800,900
 WIN=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('Tanks')
 
@@ -12,8 +12,8 @@ FPS=60
 
 #colors
 WHITE=(255,255,255)
-GREEN=(0,200,100)
-BLACK=(0,0,0)
+GREEN=(0,255,0)
+BLUE=(0,0,128)
 
 #dimensions
 TANK_WIDTH,TANK_HEIGHT=100,100
@@ -48,9 +48,14 @@ PLAYER_HIT=pygame.USEREVENT+1
 
 
 #player health
-HEALTH=100
+HEALTH=500
+
+#score
+KILLS=0
 
 r=None
+
+pygame.init()
 
 class Projectile():
 
@@ -72,7 +77,7 @@ class Projectile():
             self.mask=pygame.mask.from_surface(pygame.transform.rotate(self.img,self.angle))
     
     def handle_movement(self,TANK_RECT_LEFT,TANK_RECT_TOP,TANK_BODY_MASK,enemy):
-            global r
+            global r,KILLS
             if self.mask!=None:
                 if self.mask.overlap(TANK_BODY_MASK,(TANK_RECT_LEFT-self.rect.left,TANK_RECT_TOP-self.rect.top)) and self.c:
                     self.count=0
@@ -89,6 +94,8 @@ class Projectile():
                         self.count=0
                         self.rect.x=self.x
                         self.rect.y=self.y
+                        KILLS+=1
+
             if r!=None:
                 enemy.remove(r)
                 r=None
@@ -166,18 +173,21 @@ def draw(player,m_x,m_y,projectile,enemy,background):
     global ANGLE
     global ANGLE2
     global HEALTH
+    global KILLS
     global TANK_RECT_LEFT
     global TANK_RECT_TOP
     global TANK_BODY_MASK
 
+    
 
     WIN.blit(background,(0,0))
     
     projectile.draw()
     
     for i in enemy:
-        i.draw()
         i.bullet.draw()
+        i.draw()
+
 
     
     #rotation of tank body
@@ -222,9 +232,14 @@ def draw(player,m_x,m_y,projectile,enemy,background):
         TANK_CANNON_IMAGE=pygame.transform.rotate(TANK_CANNON,ANGLE2)
         WIN.blit(TANK_CANNON_IMAGE,(player.x-(((TANK_CANNON_WIDTH//2)*math.cos(math.radians(ANGLE2)))-((TANK_CANNON_HEIGHT//2)*math.sin(math.radians(ANGLE2)))),player.y-((TANK_CANNON_HEIGHT//2)*math.cos(math.radians(ANGLE2)))+((TANK_CANNON_WIDTH//2)*math.sin(math.radians(ANGLE2)))))
 
+    #player health
+    pygame.draw.rect(WIN,(255,0,0),(player.x-50,player.y-100,HEALTH/10,10)) #health bar
 
-    pygame.draw.rect(WIN,(255,0,0),(player.x-50,player.y-100,HEALTH,10)) #health bar
-
+    #score
+    font=pygame.font.Font('freesansbold.ttf',19) #font style and font size
+    kills=font.render('KILLS : '+ str(KILLS),True,GREEN,BLUE) #font text with font color and background color
+    WIN.blit(kills,(0,0))
+    
     pygame.display.update()
 
 def movement(keys,player,projectile,enemy):
@@ -261,6 +276,8 @@ def movement(keys,player,projectile,enemy):
 
     
 def main():
+    global HEALTH,KILLS
+
 
     #projectile and enemy objects
     projectile=Projectile(0,0,TANK_NUKE_WIDTH,TANK_NUKE_HEIGHT,ANGLE2,TANK_NUKE,False)  #projectile object
@@ -273,52 +290,73 @@ def main():
     run=True
     
     while run:
+        if HEALTH>0:
         
-        if len(enemy)==0:  
+            if len(enemy)==0:
+                if  KILLS>=0:
+                    enemy1=Enemy(TANK_BODY,TANK_CANNON,random.randint(100,WIDTH-100),random.randint(100,HEIGHT-100),player)
+                    enemy.add(enemy1)
+                if KILLS>=5:
+                    enemy2=Enemy(TANK_BODY,TANK_CANNON,random.randint(100,WIDTH-100),random.randint(100,HEIGHT-100),player)
+                    enemy.add(enemy2)     
+                if KILLS>=10:
+                    enemy3=Enemy(TANK_BODY,TANK_CANNON,random.randint(100,WIDTH-100),random.randint(100,HEIGHT-100),player)
+                    enemy.add(enemy3)  
+                if KILLS>=15:
+                    enemy4=Enemy(TANK_BODY,TANK_CANNON,random.randint(100,WIDTH-100),random.randint(100,HEIGHT-100),player)
+                    enemy.add(enemy4)            
+            
 
-            enemy1=Enemy(TANK_BODY,TANK_CANNON,random.randint(100,WIDTH-100),random.randint(100,HEIGHT-100),player)
-            enemy.add(enemy1)
-        
 
 
+            clock.tick(FPS)
+            for event in pygame.event.get():
 
-        clock.tick(FPS)
-        for event in pygame.event.get():
-
-            if event.type==pygame.QUIT:
-                run=False
-            if event.type==PLAYER_HIT:
-                global HEALTH
-                HEALTH-=10
-                if HEALTH<=0:
+                if event.type==pygame.QUIT:
                     run=False
-
-        if pygame.mouse.get_pressed()[0]:
-            if projectile.count==0:
-                projectile.rect.x=player.x
-                projectile.rect.y=player.y
-                projectile.angle=ANGLE2
-                projectile.count=1
+                if event.type==PLAYER_HIT:
+                    HEALTH-=10
 
 
-
-                
-        for i in enemy:            
-            if i.bullet.c and i.bullet.count==0:
-                i.bullet.angle=i.angle
-                i.bullet.count=1
+            if pygame.mouse.get_pressed()[0]:
+                if projectile.count==0:
+                    projectile.rect.x=player.x
+                    projectile.rect.y=player.y
+                    projectile.angle=ANGLE2
+                    projectile.count=1
 
 
 
-        #accessing contents from pygame
-        keys=pygame.key.get_pressed()
-        m_x,m_y=pygame.mouse.get_pos()
+                    
+            for i in enemy:            
+                if i.bullet.c and i.bullet.count==0:
+                    i.bullet.angle=i.angle
+                    i.bullet.count=1
+
+
+
+            #accessing contents from pygame
+            keys=pygame.key.get_pressed()
+            m_x,m_y=pygame.mouse.get_pos()
 
 
 
 
-        draw(player,m_x,m_y,projectile,enemy,BACKGROUND)
-        movement(keys,player,projectile,enemy)
+            draw(player,m_x,m_y,projectile,enemy,BACKGROUND)
+            movement(keys,player,projectile,enemy)
+        else:
+            for event in pygame.event.get():
+                if event.type==pygame.QUIT:
+                    run=False
+            
+            font=pygame.font.Font('freesansbold.ttf',32) #font style and font size
+            main_menu=font.render('GAME OVER TOTAL KILLS : '+ str(KILLS),True,GREEN,BLUE) #font text with font color and background color
+            main_menu_rect=main_menu.get_rect()
+            main_menu_rect.center=(WIDTH//2,HEIGHT//2)
+            WIN.blit(main_menu,main_menu_rect)
+
+            pygame.display.update()
+
 
     
 
