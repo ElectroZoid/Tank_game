@@ -18,7 +18,7 @@ class projectile:
              place the projectile back into player body
              remove the enemy from the set
         if next movement of projectile doesnt lead it outside window:
-             continue movement of projectile
+             continue movement of projectile in the direction in which it is initially moving
         else:
              place the projectile back into player/enemy body
 
