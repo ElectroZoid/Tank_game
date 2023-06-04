@@ -48,7 +48,7 @@ PLAYER_HIT=pygame.USEREVENT+1
 
 
 #player health
-HEALTH=1000
+HEALTH=500
 
 #score
 KILLS=0
