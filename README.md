@@ -3,10 +3,13 @@
 
 This is a mind relaxing game made for recreational and entertainment purpose. It's a shooting game developed in pygame using python. It's easy to play by all the types of people and is understandable. 
 
+
 ## ACKNOWLEDGEMENT
 - We are thankful to our proffesors for helping us when ever needed.
 - The development of this game was inspired by the YACC Godot Game engine session.
 - We would like to express our gratitude to the developers and contributors of the libraries, modules and resources used in this project.
+
+
 ## PREREQUISITES
 Before staring, make sure you have the following:
 
@@ -50,7 +53,9 @@ You have a certain amount of health and every time you get hit by the opponent i
 again starts and if you kill the enemy then the enemy again shows up from a newrandom position.After 5 kills the number of enemy becomes two after 10 it becomes
 3 after 15 it becomes 4.
 
+
 ## CONTRIBUTIONS
+
 Team Members and Contributions:
 - [VISHAL RAHANGDALE]: [Logic, Code and Pseudo code][45 hours]
 - [SWADHA SWAROOP]: [Text Rendering, README.md file and Project Report][20 hours]
