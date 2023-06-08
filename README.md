@@ -49,18 +49,7 @@ The tank’s movements are handled by
 You have a certain amount of health and every time you get hit by the opponent it reduces. As your health gets over the game end’s.
 again starts and if you kill the enemy then the enemy again shows up from a newrandom position.After 5 kills the number of enemy becomes two after 10 it becomes
 3 after 15 it becomes 4.
-## HOW TO PLAY?
 
-The tank’s movements are handled by 
-- ’A’ to go forward
-- ’S’ to go backward
-- ’D’to go right
-- ’W’ to go left
-- The mouse is used to set the direction of the cannon
-- To shoot the nuke left click is used
-You have a certain amount of health and every time you get hit by the opponent it reduces. As your health gets over the game end’s.
-again starts and if you kill the enemy then the enemy again shows up from a newrandom position.After 5 kills the number of enemy becomes two after 10 it becomes
-3 after 15 it becomes 4.
 ## CONTRIBUTIONS
 Team Members and Contributions:
 - [VISHAL RAHANGDALE]: [Logic, Code and Pseudo code][45 hours]
